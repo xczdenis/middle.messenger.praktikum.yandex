@@ -1,0 +1,43 @@
+@import "_mixins";
+@import "_functions";
+@import "_variables";
+
+.page-settings() {
+  @ident-list: @glob-ident1, @glob-ident2, @glob-ident3, @glob-ident4, @glob-ident5;
+}
+
+.page {
+
+  .page-settings();
+
+  // padding
+  .p-0 {
+    padding: 0 !important;
+  }
+
+  .generate-class(p, padding, @ident-list);
+  .generate-class(pt, padding-top, @ident-list);
+  .generate-class(pe, padding-right, @ident-list);
+  .generate-class(pb, padding-bottom, @ident-list);
+  .generate-class(ps, padding-left, @ident-list);
+  .generate-class(px, padding-left, @ident-list);
+  .generate-class(px, padding-right, @ident-list);
+  .generate-class(py, padding-top, @ident-list);
+  .generate-class(py, padding-bottom, @ident-list);
+
+  // margin
+  .m-0 {
+    margin: 0 !important;
+  }
+
+  .generate-class(m, margin, @ident-list);
+  .generate-class(mt, margin-top, @ident-list);
+  .generate-class(me, margin-right, @ident-list);
+  .generate-class(mb, margin-bottom, @ident-list);
+  .generate-class(ms, margin-left, @ident-list);
+  .generate-class(mx, margin-left, @ident-list);
+  .generate-class(mx, margin-right, @ident-list);
+  .generate-class(my, margin-top, @ident-list);
+  .generate-class(my, margin-bottom, @ident-list);
+
+}

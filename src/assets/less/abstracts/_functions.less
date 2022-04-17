@@ -1,0 +1,79 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Less functions.
+// -----------------------------------------------------------------------------
+@import "../abstracts/_mixins";
+@import "../abstracts/_variables";
+
+.generate(@class-prefix, @attribute, @value-list, @important, @i: 1) when (@i =< length(@value-list)) {
+  @v: extract(@value-list, @i);
+
+  .@{class-prefix}-@{i} when (@important = 1) {
+      @{attribute}: @v !important;
+  }
+  .@{class-prefix}-@{i} when (@important = 0) {
+      @{attribute}: @v;
+  }
+
+  .generate(@class-prefix, @attribute, @value-list, @important, @i + 1);
+}
+
+
+.generate-class(@class-prefix, @attribute, @value-list, @important: 1) {
+  .generate(@class-prefix, @attribute, @value-list, @important);
+}
+
+
+.generate-class-from-breakpoints(@class-prefix, @class-postfix, @k, @v, @bp-index: 1) when (@bp-index =< length(@glob-breakpoints)) {
+
+  @bp: extract(@glob-breakpoints, @bp-index);
+  @dms: extract(@glob-dimensions, @bp-index);
+
+  @media (min-width: @dms) {
+    .@{class-prefix}-@{bp}-@{class-postfix} {
+      @{k}: @v !important;
+    }
+  }
+
+  .generate-class-from-breakpoints(@class-prefix, @class-postfix, @k, @v, @bp-index + 1);
+}
+
+
+.generate-col-class(@bp-index, @col-index: 1) when (@col-index =< @glob-col-count) {
+
+  @bp: extract(@glob-breakpoints, @bp-index);
+  @dms: extract(@glob-dimensions, @bp-index);
+
+  @media (min-width: @dms) {
+    .@{glob-col-name}-@{bp}-@{col-index} {
+      width: @col-width * @col-index;
+    }
+  }
+
+  .generate-col-class(@bp-index, @col-index + 1);
+}
+
+
+.make-col(@bp-index: 1) when (@bp-index =< length(@glob-breakpoints)) {
+
+  .generate-col-class(@bp-index);
+
+  .make-col(@bp-index + 1);
+
+}
+
+
+.make-container(@bp-index: 1) when (@bp-index =< length(@glob-breakpoints)) {
+
+  @bp: extract(@glob-breakpoints, @bp-index);
+  @dms: extract(@glob-dimensions, @bp-index);
+  @container-dms: extract(@glob-container-dimensions, @bp-index);
+
+  @media (min-width: @dms) {
+    .container {
+      width: @container-dms;
+      .mixin_container;
+    }
+  }
+
+  .make-container(@bp-index + 1);
+}

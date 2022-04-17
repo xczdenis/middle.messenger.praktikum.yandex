@@ -1,0 +1,92 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the Chat page
+// -----------------------------------------------------------------------------
+@import "../layout/_grid";
+@import "../abstracts/_variables";
+@import "../abstracts/_borders";
+
+.page-settings() {
+  @message-box-radius: 10px;
+}
+
+.page {
+
+  .page-settings();
+
+  .chat-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    .chat-list-container {
+      background: @glob-color-light;
+      height: 100%;
+      overflow: auto;
+      padding: @glob-ident2;
+
+      .chat-list__dialogue {
+        .page.border-top;
+        cursor: pointer;
+        margin: 0;
+        padding: @glob-ident2 0;
+
+        &.active {
+          background: @glob-color-light-blue;
+        }
+      }
+      .chat-list__dialogue:hover {
+        background: @glob-color-hover;
+      }
+    }
+
+    .mixin_thin-gray-scroll(chat-list-container);
+
+    .chat-feed-container {
+      height: 100%;
+      overflow: auto;
+      padding: 0;
+
+      .chat-feed__message-row {
+        margin: @glob-ident3 0;
+        &.received {
+          text-align: left;
+        }
+        &.sent {
+          text-align: right;
+        }
+      }
+
+      .chat-feed__message-box {
+        width: fit-content;
+        display: inline-block;
+        &.received {
+          text-align: left;
+        }
+        &.sent {
+          text-align: right;
+        }
+      }
+
+      .chat-feed__message {
+        padding: @glob-ident2 @glob-ident3;
+        border-radius: @message-box-radius;
+
+        &.received {
+          background: @glob-color-light;
+          border-top-left-radius: 0;
+        }
+
+        &.sent {
+          background: @glob-color-light-primary;
+          border-bottom-right-radius: 0;
+        }
+      }
+
+    }
+
+    //.mixin_thin-gray-scroll(Chat-feed-container);
+
+  }
+
+}
