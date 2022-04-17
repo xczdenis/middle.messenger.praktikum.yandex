@@ -10,10 +10,7 @@
   "keywords": [],
   "author": "Denis",
   "license": "ISC",
-  "engines" : {
-    "npm" : ">=7.0.0",
-    "node" : ">=16.0.0"
-  },
+
   "devDependencies": {
     "@parcel/transformer-less": "^2.4.1",
     "express": "^4.17.3",
