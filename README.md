@@ -16,3 +16,6 @@
 3. Сборка: `npm run build`
 4. Запуск dev сервера: `npm run serve`
 5. Запуск prod сервера: `npm run start`
+
+## Pull requests
+1. [Sprint 1](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/4)
