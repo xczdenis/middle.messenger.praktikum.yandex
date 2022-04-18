@@ -14,5 +14,5 @@
 1. Клонируйте репозиторий: `git clone`
 2. Установите зависимости: `npm install`
 3. Сборка: `npm run build`
-4. Запуск by parcel: `npm run serve`
-5. Запуск by express: `npm run start`
+4. Запуск dev сервера: `npm run serve`
+5. Запуск prod сервера: `npm run start`

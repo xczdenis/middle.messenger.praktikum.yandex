@@ -1,12 +1,12 @@
-import Handlebars from 'handlebars'
+import t from './modules/templator'
 import Home from './pages/PublicPages/Home'
 import Login from './pages/PublicPages/Login'
 import SignUp from './pages/PublicPages/SignUp'
 import Profile from './pages/AuthPages/Profile'
 import Error from './pages/Error'
 import Chat from './pages/AuthPages/Chat'
-import getRouterLinkAttrs from './modules/engine/router/getRouterLinkAttrs'
 import ChangePassword from './pages/AuthPages/ChangePassword'
+import DOMInit from './modules/engine/router/DOMInit'
 
 const template = `
 <div class='page'>
@@ -29,23 +29,39 @@ const template = `
 </div>
 `
 
-Handlebars.registerHelper('routerLink', function (to) {
-  return getRouterLinkAttrs(to)
-})
+class Component {
+  constructor(name) {
+    this.name = name
+  }
 
-const hbs = Handlebars.compile(template)
-const context = {}
+  renderTemplate() {
+    return t.compile(template)()
+  }
 
-export default {
-  template: hbs(context),
-  components: [
-    Home(),
-    Login(),
-    SignUp(),
-    Error({ errorCode: 500 }, 'error500'),
-    Error({ errorCode: 404 }, 'error404'),
-    Chat(),
-    Profile(),
-    ChangePassword()
-  ],
+  mount(targetElementId) {
+    const targetElement = document.querySelector(`#${targetElementId}`)
+    if (targetElement) {
+      targetElement.innerHTML = this.renderTemplate()
+    }
+    this.onMount(targetElement)
+  }
+
+  onMount(targetElement) {
+    if (targetElement) {
+      DOMInit(targetElement, {
+        components: [
+          Home(),
+          Login(),
+          SignUp(),
+          Error({ errorCode: 500 }, 'error500'),
+          Error({ errorCode: 404 }, 'error404'),
+          Chat(),
+          Profile(),
+          ChangePassword(),
+        ],
+      })
+    }
+  }
 }
+
+export default new Component('App')

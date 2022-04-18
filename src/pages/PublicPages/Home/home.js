@@ -1,3 +1,4 @@
+
 import t from '../../../modules/templator'
 import template from './home.tmpl'
 

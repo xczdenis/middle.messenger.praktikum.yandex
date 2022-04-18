@@ -8,29 +8,12 @@ export default `
         </div>
         <div class='card-body text-center'>
           <form>
-            <div class="mb-3">
-              {{{ first_name }}}
-            </div>
-            <div class="mb-3">
-              {{{ second_name }}}
-            </div>
-            <div class="mb-3">
-              {{{ login }}}
-            </div>
-            <div class="mb-3">
-              {{{ email }}}
-            </div>
-            <div class="mb-3">
-              {{{ password }}}
-            </div>
-            <div class="mb-3">
-              {{{ password2 }}}
-            </div>
-            <div class="mb-3">
-              {{{ phone }}}
-            </div>
-            {{{ btnSignUp }}}
-            {{{ btnSignIn }}}
+            {{#each fields}}
+              <div class="mb-3">{{{ this.template }}}</div>
+            {{/each}}
+            {{#each buttons}}
+              {{{ this.template }}}
+            {{/each}}
         </form>
         </div>
       </div>
