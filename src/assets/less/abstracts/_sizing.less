@@ -1,0 +1,27 @@
+@import "_functions";
+
+.page-settings() {
+  @percent-list: 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100%;
+  @vh-list: 10vh, 20vh, 30vh, 40vh, 50vh, 60vh, 70vh, 80vh, 90vh, 100vh;
+}
+
+.page {
+
+  .page-settings();
+
+  //w-x% (width: x%)
+  .generate-class(w, width, @percent-list);
+
+  //h-x% (height: x%)
+  .generate-class(h, height, @percent-list);
+  .h-85 {
+    height: 85%;
+  }
+  .h-15 {
+    height: 15%;
+  }
+
+  //vh-x% (height: xvh)
+  .generate-class(vh, height, @vh-list);
+
+}

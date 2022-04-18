@@ -1,0 +1,48 @@
+@import "../abstracts/_variables";
+
+.page-settings() {
+}
+
+.page {
+
+  .page-settings();
+
+  .avatar-wrapper{
+    position: relative;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: all .3s ease;
+    &:hover{
+      cursor: pointer;
+    }
+    &:hover .profile-pic{
+      opacity: .5;
+    }
+    .profile-pic {
+      height: 100%;
+      width: 100%;
+      transition: all .3s ease;
+      &:after{
+        font-family: remixicon;
+        content: "\F25F";
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        font-size: 140px;
+        background: #ecf0f1;
+        color: #34495e;
+        text-align: center;
+      }
+    }
+    .upload-button {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+}
