@@ -9,24 +9,28 @@ import ChangePassword from './pages/AuthPages/ChangePassword'
 import DOMInit from './modules/engine/router/DOMInit'
 
 const template = `
-<div class='page'>
+<main class='page'>
+
   <div class='sticky-top d-flex justify-content-center pt-2 pb-2 bg-white shadow'
        style='height: 50px'
   >
-    <ul class='nav'>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'home'}}}>Home</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'login'}}}>Login</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'signUp'}}}>Signup</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'error404'}}}>Error404</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'error500'}}}>Error500</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'chat'}}}>Chat</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'Profile'}}}>Profile</li>
-      <li class='nav-link cursor-pointer me-3' {{{routerLink 'ChangePassword'}}}>Change password</li>
-    </ul>
+    <nav>
+      <ul class='nav'>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'home'}}}>Home</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'login'}}}>Login</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'signUp'}}}>Signup</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'error404'}}}>Error404</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'error500'}}}>Error500</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'chat'}}}>Chat</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'Profile'}}}>Profile</li>
+        <li class='nav-link cursor-pointer me-3' {{{routerLink 'ChangePassword'}}}>Change password</li>
+      </ul>
+    </nav>
   </div>
   
   <div id='routerView' style='height: calc(100vh - 50px)'/>
-</div>
+
+</main>
 `
 
 class Component {
