@@ -1,5 +1,5 @@
 # Чат
-Сайт: [чат](https://bejewelled-gnome-082492.netlify.app/)
+Сайт: [чат](https://capable-stroopwafel-0d4bf9.netlify.app/)
 
 ## Дизайн
 Фигма: [смотреть дизайн](https://www.figma.com/file/EigTT1Fj8beQMVjOJayOgA/ypchat?node-id=1%3A21)
