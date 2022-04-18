@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7f2e6c9c-129e-479b-a756-6f289326a0f8/deploy-status)](https://app.netlify.com/sites/capable-stroopwafel-0d4bf9/deploys)
+
 # Чат
 Сайт: [чат](https://capable-stroopwafel-0d4bf9.netlify.app/)
 
