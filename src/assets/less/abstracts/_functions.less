@@ -8,7 +8,7 @@
   @v: extract(@value-list, @i);
 
   .@{class-prefix}-@{i} when (@important = 1) {
-      @{attribute}: @v !important;
+      @{attribute}: @v;
   }
   .@{class-prefix}-@{i} when (@important = 0) {
       @{attribute}: @v;
@@ -30,7 +30,7 @@
 
   @media (min-width: @dms) {
     .@{class-prefix}-@{bp}-@{class-postfix} {
-      @{k}: @v !important;
+      @{k}: @v;
     }
   }
 
