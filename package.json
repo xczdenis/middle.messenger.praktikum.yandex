@@ -5,20 +5,31 @@
   "scripts": {
     "serve": "parcel public/index.html --port 3000",
     "build": "parcel build public/index.html",
-    "start": "npm run build && node server.js"
+    "start": "npm run build && node server.js",
+    "eslint": "eslint"
   },
   "keywords": [],
   "author": "Denis",
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-less": "^2.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.17.3",
     "less": "^4.1.2",
     "parcel": "^2.4.1",
-    "prettier": "2.6.2"
+    "prettier": "2.6.2",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
+    "@types/uuid": "^8.3.4",
     "handlebars": "^4.7.7",
-    "remixicon": "^2.5.0"
+    "remixicon": "^2.5.0",
+    "uuid": "^8.3.2"
   }
 }

@@ -13,4 +13,21 @@
 
   .mixin_form-control();
 
+  .validation-feedback {
+    display: none;
+  }
+
+  .needs-validation {
+    .validation-feedback {
+      display: none;
+      margin-top: @glob-ident1;
+      color: @glob-color-danger;
+      text-align: left;
+    }
+
+    .invalid {
+      border-color: @glob-color-danger !important;
+    }
+
+  }
 }
