@@ -5,7 +5,39 @@ import ChatFeedMessage from '../ChatFeedMessage'
 import Input from '../../Input'
 import { Validators } from '../../../modules/validator/config'
 import Button from '../../Button'
-import { senMsg } from './services'
+import { sendMsg } from './services'
+
+const msg1 = ChatFeedMessage({
+  name: 'Msg1',
+  props: {
+    isMine: false,
+    text: 'Hi! What are you doing?',
+    time: '11:56',
+  },
+})
+const msg2 = ChatFeedMessage({
+  name: 'Msg2',
+  props: {
+    isMine: true,
+    text: 'am gonna to drive my Porsche.',
+    time: '11:57',
+    msgSent: true,
+    msgDelivered: true,
+    msgRead: true,
+  },
+})
+const msg3 = ChatFeedMessage({
+  name: 'Msg3',
+  props: {
+    isMine: true,
+    text: 'you?',
+    time: '11:58',
+    msgSent: true,
+    msgDelivered: true,
+    msgRead: false,
+  },
+})
+const messages = [msg1, msg2, msg3]
 
 export default class extends BaseComponent {
   render(): string {
@@ -17,36 +49,7 @@ export default class extends BaseComponent {
 
   children() {
     return [
-      ChatFeedMessage({
-        name: 'Msg1',
-        props: {
-          isMine: false,
-          text: 'Hi! What are you doing?',
-          time: '11:56',
-        },
-      }),
-      ChatFeedMessage({
-        name: 'Msg2',
-        props: {
-          isMine: true,
-          text: 'am gonna to drive my Porsche.',
-          time: '11:57',
-          msgSent: true,
-          msgDelivered: true,
-          msgRead: true,
-        },
-      }),
-      ChatFeedMessage({
-        name: 'Msg3',
-        props: {
-          isMine: true,
-          text: 'you?',
-          time: '11:58',
-          msgSent: true,
-          msgDelivered: true,
-          msgRead: false,
-        },
-      }),
+      ...messages,
       Input({
         name: 'InputMsg',
         props: { name: 'message', placeholder: 'Type your message' },
@@ -64,7 +67,7 @@ export default class extends BaseComponent {
           titleBp: 'xl',
           ico: 'send-plane-line',
         },
-        events: { click: senMsg },
+        events: { click: sendMsg },
       }),
     ]
   }

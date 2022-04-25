@@ -13,7 +13,7 @@ export default `
     </div>
   </div>
   <div class='col-2 d-none d-sm-flex flex-column justify-content-between align-items-center'>
-    <small class='text-secondary'>{{time}}</small>
+    <time class='text-secondary'>{{time}}</time>
     {{#if newMessagesNumber}}<span class='badge rounded-pill bg-primary d-block'>{{newMessagesNumber}}</span>{{/if}}
   </div>
 </div>

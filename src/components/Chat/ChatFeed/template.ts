@@ -11,6 +11,9 @@ export default `
           <h3 class='text-muted'>Select a chat to send a message</h3>
         </div>
       {{/if}}
+
+      <h1>{{header}}</h1>
+
     </div>
   </div>
   <form enctype='multipart/form-data'>
