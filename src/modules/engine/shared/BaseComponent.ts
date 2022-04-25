@@ -2,8 +2,18 @@ import { ReadonlyUnknownArray as Arr } from '../shared/Types'
 import { v4 as uuidv4 } from 'uuid'
 import Validator from '../../validator'
 import { ClassInvalid } from '../../validator/config'
+import EventBus from '../reactivity/EventBus'
 
 abstract class BaseComponent {
+  static EVENTS = {
+    INIT: 'init',
+    INIT_VALIDATOR: 'init:validator',
+    INIT_SET_COMPONENTS: 'init:set-components',
+    FLOW_BEFORE_CREATE: 'flow:before-create',
+    FLOW_CREATED: 'flow:created',
+    FLOW_RENDER: 'flow:render',
+  }
+
   private readonly _meta: {
     tagName: string
     events: Record<string, (...args: Arr) => void>
@@ -14,6 +24,8 @@ abstract class BaseComponent {
   private _element: HTMLElement | null = null
 
   private _validatorFunction: (() => void) | null = null
+
+  private _eventBus: () => EventBus
 
   private _removeInvalidClass = (): void => {
     const listener = this._getFirstChild()
@@ -26,7 +38,7 @@ abstract class BaseComponent {
 
   props: Record<string, unknown>
 
-  components: BaseComponent[]
+  components: BaseComponent[] = []
 
   constructor(
     name: string,
@@ -35,20 +47,42 @@ abstract class BaseComponent {
     validator = '',
     tagName = 'div'
   ) {
+    const eventBus = new EventBus()
+    this._eventBus = () => eventBus
     this.name = name
     this.props = this._makePropsProxy(props)
     const id = uuidv4()
     this._meta = { tagName, events, id, validator }
-    this._createResource()
+    this._registerEvents(eventBus)
+    eventBus.emit(BaseComponent.EVENTS.INIT)
+  }
+
+  private _registerEvents(eventBus: EventBus): void {
+    eventBus.on(BaseComponent.EVENTS.INIT, this._createResource.bind(this))
+    eventBus.on(
+      BaseComponent.EVENTS.INIT_SET_COMPONENTS,
+      this._setComponents.bind(this)
+    )
+    eventBus.on(
+      BaseComponent.EVENTS.INIT_VALIDATOR,
+      this._initValidator.bind(this)
+    )
+    eventBus.on(
+      BaseComponent.EVENTS.FLOW_BEFORE_CREATE,
+      this.beforeCreate.bind(this)
+    )
+    eventBus.on(BaseComponent.EVENTS.FLOW_CREATED, this.created.bind(this))
+    eventBus.on(BaseComponent.EVENTS.FLOW_RENDER, this._render.bind(this))
+    eventBus.on(BaseComponent.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
   private _createResource(): void {
-    this.beforeCreated()
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_BEFORE_CREATE)
     this._element = this._createElement()
-    this._setComponents()
-    this._render()
-    this._initValidator()
-    this.created()
+    this._eventBus().emit(BaseComponent.EVENTS.INIT_SET_COMPONENTS)
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_RENDER)
+    this._eventBus().emit(BaseComponent.EVENTS.INIT_VALIDATOR)
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_CREATED)
   }
 
   private _initValidator(): void {
@@ -101,7 +135,7 @@ abstract class BaseComponent {
 
   private _updateResource(): void {
     this.beforeUpdate()
-    this._render()
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_RENDER)
     this.updated()
   }
 
@@ -208,7 +242,7 @@ abstract class BaseComponent {
     this.mounted()
   }
 
-  beforeCreated(): void {}
+  beforeCreate(): void {}
 
   created(): void {}
 
