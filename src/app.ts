@@ -1,5 +1,4 @@
 import BaseComponent from './modules/engine/shared/BaseComponent'
-import { ReadonlyUnknownArray as Arr } from './modules/engine/shared/Types'
 import t from './modules/templator/index'
 import DOMInit from './modules/engine/router/DOMInit'
 import Home from './pages/PublicPages/Home'
@@ -9,6 +8,7 @@ import Error from './pages/Error'
 import Chat from './pages/AuthPages/Chat'
 import Profile from './pages/AuthPages/Profile'
 import ChangePassword from './pages/AuthPages/ChangePassword'
+import { TProps, TEvents } from './modules/engine/shared/Types'
 
 const template = `<main class='page'>
   <div class='sticky-top d-flex justify-content-center pt-2 pb-2 bg-white shadow'
@@ -31,7 +31,7 @@ const template = `<main class='page'>
 </main>
 `
 
-class App extends BaseComponent {
+class Component extends BaseComponent {
   render(): string {
     return t.compile(template)({})
   }
@@ -50,9 +50,6 @@ class App extends BaseComponent {
   }
 }
 
-export default (
-  props: Record<string, unknown> = {},
-  events: Record<string, (...args: Arr) => void> = {}
-): App => {
-  return new App('App', props, events)
+export const app = (props: TProps = {}, events: TEvents = {}): Component => {
+  return new Component('App', props, events)
 }

@@ -3,9 +3,9 @@ export default `
   <div class='row h-9 m-0'>
     <div class='col-12 h-10 p-3 overflow-auto thin-gray-scroll'>
       {{#if messages}}
-        <div class='' {{{child 'Msg1'}}}></div>
-        <div class='' {{{child 'Msg2'}}}></div>
-        <div class='' {{{child 'Msg3'}}}></div>
+        <div {{{child 'Msg1'}}}></div>
+        <div {{{child 'Msg2'}}}></div>
+        <div {{{child 'Msg3'}}}></div>
       {{else}}
         <div class='h-10 d-flex text-secondary align-items-center justify-content-center'>
           <h3 class='text-muted'>Select a chat to send a message</h3>

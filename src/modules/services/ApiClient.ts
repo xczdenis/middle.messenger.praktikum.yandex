@@ -1,7 +1,7 @@
 import Requests from '../engine/shared/Requests'
-import { ApiClientParameters } from '../engine/shared/Types'
+import { TApiClientParameters } from '../engine/shared/Types'
 
-const options: ApiClientParameters = {
+const options: TApiClientParameters = {
   baseURL: '',
   withCredentials: false,
   headers: {

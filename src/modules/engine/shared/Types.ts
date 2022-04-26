@@ -1,13 +1,17 @@
-export type ReadonlyUnknownArray = readonly unknown[]
+export type TFnWithArgs = <T>(...args: T[]) => void
 
-export type ComponentProperties = {
+export type TProps = Record<string, TFnWithArgs | unknown>
+
+export type TEvents = Record<string, TFnWithArgs>
+
+export type TComponentProperties = {
   name?: string
-  props?: Record<string, unknown>
-  events?: Record<string, (...args: ReadonlyUnknownArray) => void>
+  props?: TProps
+  events?: TEvents
   validator?: string
 }
 
-export type ApiClientParameters = {
+export type TApiClientParameters = {
   baseURL?: string
   withCredentials?: boolean
   headers?: Record<string, string>

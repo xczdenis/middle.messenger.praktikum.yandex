@@ -1,6 +1,7 @@
-import { ApiClientParameters } from './Types'
+import { TApiClientParameters } from './Types'
+import { queryStringify } from './utils'
 
-enum METHOD {
+enum Method {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -9,47 +10,19 @@ enum METHOD {
 }
 
 type Options = {
-  method: METHOD
+  method: Method
   timeout?: number
   data?: Record<string, string>
 }
 type OptionsWithoutMethod = Omit<Options, 'method'>
-
-function encode(input: string): string {
-  try {
-    return encodeURIComponent(input)
-  } catch (e) {
-    return ''
-  }
-}
-
-function queryStringify(data: Record<string, string>) {
-  const pairs: string[] = []
-  Object.keys(data).forEach((key) => {
-    if (data[key]) {
-      const kEncode = encode(key)
-      const vEncode = encode(data[key])
-      if (kEncode && vEncode) {
-        pairs.push(kEncode + '=' + vEncode)
-      }
-    }
-  })
-  return pairs.length ? '?' + pairs.join('&') : ''
-}
 
 class Requests {
   private readonly _client: XMLHttpRequest
 
   private readonly _baseUrl: string = ''
 
-  constructor(data: ApiClientParameters = {}) {
+  constructor(data: TApiClientParameters = {}) {
     const xhr = new XMLHttpRequest()
-    // const headers = data.headers
-    // if (headers) {
-    //   Object.keys(headers).forEach((key) =>
-    //     xhr.setRequestHeader(key, headers[key])
-    //   )
-    // }
     xhr.timeout = data.timeout ? data.timeout : 5000
     xhr.withCredentials = data.withCredentials ? data.withCredentials : false
 
@@ -64,28 +37,28 @@ class Requests {
     if (options.data) {
       url += queryStringify(options.data)
     }
-    return this.request(url, { ...options, method: METHOD.GET })
+    return this.request(url, { ...options, method: Method.GET })
   }
 
   post(
     url: string,
     options: OptionsWithoutMethod = {}
   ): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.POST })
+    return this.request(url, { ...options, method: Method.POST })
   }
 
   put(
     url: string,
     options: OptionsWithoutMethod = {}
   ): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.PUT })
+    return this.request(url, { ...options, method: Method.PUT })
   }
 
   delete(
     url: string,
     options: OptionsWithoutMethod = {}
   ): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHOD.DELETE })
+    return this.request(url, { ...options, method: Method.DELETE })
   }
 
   request(url: string, options: Options): Promise<XMLHttpRequest> {
@@ -100,11 +73,9 @@ class Requests {
 
       xhr.open(method, xhrUrl)
 
-      if (method === METHOD.GET || !data) {
-        // xhr.send()
+      if (method === Method.GET || !data) {
         console.log(`Send request to ${xhrUrl}`)
       } else {
-        // xhr.send(JSON.stringify(data))
         console.log(data)
       }
 

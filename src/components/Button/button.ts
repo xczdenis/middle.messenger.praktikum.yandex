@@ -5,9 +5,17 @@ import getValue from '../../utils/getValue'
 
 export default class extends BaseComponent {
   render(): string {
+    let titleClass = ''
+    if (this.props.title && this.props.ico) {
+      titleClass = 'ms-2'
+    }
+    if (this.props.titleBp) {
+      titleClass += ` d-none d-${this.props.titleBp}-block`
+    }
     const context = {
       type: getValue(this.props, 'type', 'button'),
-      class: getValue(this.props, 'class', 'btn btn-primary'),
+      buttonClass: getValue(this.props, 'class', 'btn btn-primary'),
+      titleClass,
     }
     return t.compile(template)(Object.assign(context, this.props))
   }
