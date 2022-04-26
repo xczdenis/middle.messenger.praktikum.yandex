@@ -1,10 +1,10 @@
 import isObjectLike from './mydash/isObjectLike'
 
-function getValue<T>(
-  object: Record<string, T>,
+function getValue<TValue, TDefaultValue>(
+  object: Record<string, TValue>,
   key: string,
-  defaultValue: T
-): T {
+  defaultValue: TDefaultValue
+): TValue | TDefaultValue {
   return isObjectLike(object) && object[key] !== undefined
     ? object[key]
     : defaultValue

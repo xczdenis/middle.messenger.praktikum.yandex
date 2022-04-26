@@ -36,7 +36,7 @@ abstract class BaseComponent {
 
   name: string
 
-  props: Record<string, unknown>
+  props: TProps
 
   components: BaseComponent[] = []
 
