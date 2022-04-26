@@ -1,20 +1,20 @@
-import { ReadonlyUnknownArray as Arr } from '../shared/Types'
+import { TFnWithArgs } from '../shared/Types'
 
 class EventBus {
-  private readonly _listeners: Record<string, Array<(...args: Arr) => void>>
+  private readonly _listeners: Record<string, TFnWithArgs[]>
 
   constructor() {
     this._listeners = {}
   }
 
-  on(event: string, callback: (...args: Arr) => void): void {
+  on(event: string, callback: TFnWithArgs): void {
     if (!this._listeners[event]) {
       this._listeners[event] = []
     }
     this._listeners[event].push(callback)
   }
 
-  off(event: string, callback: (...args: Arr) => void): void {
+  off(event: string, callback: TFnWithArgs): void {
     if (!this._listeners[event]) {
       throw new Error(`Event ${event} not detected`)
     }

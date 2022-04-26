@@ -1,8 +1,8 @@
-import { ReadonlyUnknownArray as Arr } from '../shared/Types'
 import { v4 as uuidv4 } from 'uuid'
 import Validator from '../../validator'
 import { ClassInvalid } from '../../validator/config'
 import EventBus from '../reactivity/EventBus'
+import { TProps, TEvents, TFnWithArgs } from './Types'
 
 abstract class BaseComponent {
   static EVENTS = {
@@ -16,7 +16,7 @@ abstract class BaseComponent {
 
   private readonly _meta: {
     tagName: string
-    events: Record<string, (...args: Arr) => void>
+    events: TEvents
     validator: string
     id: string
   }
@@ -42,8 +42,8 @@ abstract class BaseComponent {
 
   constructor(
     name: string,
-    props: Record<string, unknown> = {},
-    events: Record<string, (...args: Arr) => void> = {},
+    props: TProps = {},
+    events: TEvents = {},
     validator = '',
     tagName = 'div'
   ) {
@@ -199,7 +199,7 @@ abstract class BaseComponent {
     return []
   }
 
-  addListener(eventName: string, cb: (...args: Arr) => void): void {
+  addListener(eventName: string, cb: TFnWithArgs): void {
     this._meta.events[eventName] = cb
     this._element?.addEventListener(eventName, cb)
   }

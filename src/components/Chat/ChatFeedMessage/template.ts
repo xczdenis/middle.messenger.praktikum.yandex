@@ -17,7 +17,7 @@ export default `
           {{/if}}
         {{/if}}
       {{else}}{{/if}}
-      <small>{{time}}</small>
+      <time>{{time}}</time>
     </div>
   </div>
 </div>

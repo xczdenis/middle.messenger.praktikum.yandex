@@ -1,6 +1,9 @@
-export default `<button type='{{type}}' class='{{class}}'>
+export default `
+<button type='{{type}}' class='{{buttonClass}}'>
   <span class='d-flex'>
-  {{#if ico}}<i class='ri-{{ico}}'></i>{{/if}}
-  <span class='{{#if title}}{{#if ico}}ms-2{{/if}}{{/if}} {{#if titleBp}}d-none d-{{titleBp}}-block{{/if}}'>{{title}}</span>
+    {{#if ico}}
+      <i class='ri-{{ico}}'></i>
+    {{/if}}
+    <span class='{{titleClass}}'>{{title}}</span>
   </span>
 </button>`
