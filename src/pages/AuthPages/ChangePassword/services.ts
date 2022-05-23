@@ -1,12 +1,10 @@
 import UserService from '../../../modules/services/UserService'
+import { ComponentChangePassword } from './component'
 
-export const changePassword = function () {
-  const form = this.form
-  if (form) {
-    UserService.changePassword(
-      form.elements.oldPassword.value,
-      form.elements.password.value,
-      form.elements.password2.value
-    ).then()
-  }
+export const changePassword = (self: ComponentChangePassword) => () => {
+  UserService.changePassword(
+    self.oldPassword.getValue(),
+    self.password.getValue(),
+    self.password2.getValue()
+  ).then()
 }

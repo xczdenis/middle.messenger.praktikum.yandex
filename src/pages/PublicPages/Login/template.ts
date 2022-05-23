@@ -8,10 +8,10 @@ export default `
         </div>
         <div class='card-body text-center'>
           <form>
-            <div class='mb-3' {{{child 'login'}}}></div>
-            <div class='mb-3' {{{child 'password'}}}></div>
-            <div class='mb-3' {{{child 'btnSignIn'}}}></div>
-            <div class='mb-3' {{{child 'btnSignUp'}}}></div>
+            <div class='mb-3' {{{:child 'login'}}}></div>
+            <div class='mb-3' {{{:child 'password'}}}></div>
+            <div class='mb-3' {{{:child 'btnSignIn'}}}></div>
+            <div class='mb-3' {{{:child 'btnSignUp'}}}></div>
         </form>
         </div>
       </div>

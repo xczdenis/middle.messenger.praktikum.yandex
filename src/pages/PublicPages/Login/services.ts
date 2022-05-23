@@ -1,11 +1,6 @@
 import AuthService from '../../../modules/services/AuthService'
+import { ComponentLogin } from './component'
 
-export const signIn = function () {
-  const form = this.form
-  if (form) {
-    AuthService.login(
-      form.elements.login.value,
-      form.elements.password.value
-    ).then()
-  }
+export const signIn = (self: ComponentLogin) => (): void => {
+  AuthService.login(self.login.getValue(), self.password.getValue()).then()
 }

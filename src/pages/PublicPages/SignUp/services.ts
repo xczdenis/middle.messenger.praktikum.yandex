@@ -1,16 +1,14 @@
 import AuthService from '../../../modules/services/AuthService'
+import { ComponentSignUp } from './component'
 
-export const signUp = function () {
-  const form = this.form
-  if (form) {
-    AuthService.signUp(
-      form.elements.first_name.value,
-      form.elements.second_name.value,
-      form.elements.login.value,
-      form.elements.email.value,
-      form.elements.password.value,
-      form.elements.password2.value,
-      form.elements.phone.value
-    ).then()
-  }
+export const signUp = (self: ComponentSignUp) => (): void => {
+  AuthService.signUp(
+    self.first_name.getValue(),
+    self.second_name.getValue(),
+    self.login.getValue(),
+    self.email.getValue(),
+    self.password.getValue(),
+    self.password2.getValue(),
+    self.phone.getValue()
+  ).then()
 }

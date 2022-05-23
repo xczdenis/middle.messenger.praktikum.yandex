@@ -1,4 +1,4 @@
-import { TFnWithArgs } from '../shared/Types'
+import { TFnWithArgs } from '../shared/types'
 
 class EventBus {
   private readonly _listeners: Record<string, TFnWithArgs[]>

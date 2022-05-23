@@ -2,6 +2,7 @@
 // This file contains all styles related to the Button component.
 // -----------------------------------------------------------------------------
 @import "../abstracts/_variables";
+@import "../abstracts/_functions";
 
 .page-settings() {
 }
@@ -38,7 +39,7 @@
   }
 
   .btn-secondary {
-    color: @glob-color-white;
+    color: @glob-color-base-white;
     background-color: @glob-color-secondary;
     border-color: @glob-color-secondary;
   }
@@ -50,7 +51,7 @@
   }
 
   .btn-danger {
-    color: @glob-color-white;
+    color: @glob-color-base-white;
     background-color: @glob-color-danger;
     border-color: @glob-color-danger;
   }
@@ -71,12 +72,6 @@
     color: @glob-color-dark;
     background-color: @glob-color-light;
     border-color: @glob-color-light;
-  }
-
-  .btn-dark {
-    color: @glob-color-white;
-    background-color: @glob-color-dark;
-    border-color: @glob-color-dark;
   }
 
   .btn-dark {

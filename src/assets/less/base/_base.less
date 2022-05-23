@@ -3,6 +3,14 @@
 // -----------------------------------------------------------------------------
 
 @import "../abstracts/_variables";
+@import "../abstracts/_functions";
+
+.make_colors(@glob-color-primary-name, @glob-color-primary-values);
+.make_colors(@glob-color-white-name, @glob-color-white-values);
+.make_colors(@glob-color-dark-name, @glob-color-dark-values);
+.make_colors(@glob-color-card-name, @glob-color-card-values);
+.make_colors(@glob-color-border-name, @glob-color-border-values);
+.make_colors(@glob-color-hover-name, @glob-color-hover-values);
 
 html {
   box-sizing: border-box;
@@ -21,4 +29,9 @@ body {
 
 a {
   text-decoration: none;
+}
+
+.page {
+  background: @glob-color-white;
+  color: @glob-color-dark;
 }
