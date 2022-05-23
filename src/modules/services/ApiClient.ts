@@ -1,5 +1,5 @@
 import Requests from '../engine/shared/Requests'
-import { TApiClientParameters } from '../engine/shared/Types'
+import { TApiClientParameters } from '../engine/shared/types'
 
 const options: TApiClientParameters = {
   baseURL: '',

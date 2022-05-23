@@ -8,15 +8,15 @@ export default `
         </div>
         <div class='card-body text-center'>
           <form>
-            <div class='mb-3' {{{child 'first_name'}}}></div>
-            <div class='mb-3' {{{child 'second_name'}}}></div>
-            <div class='mb-3' {{{child 'login'}}}></div>
-            <div class='mb-3' {{{child 'email'}}}></div>
-            <div class='mb-3' {{{child 'password'}}}></div>
-            <div class='mb-3' {{{child 'password2'}}}></div>
-            <div class='mb-3' {{{child 'phone'}}}></div>
-            <div class='mb-3' {{{child 'btnSignUp'}}}></div>
-            <div class='mb-3' {{{child 'btnSignIn'}}}></div>
+            <div class='mb-3' {{{:child 'first_name'}}}></div>
+            <div class='mb-3' {{{:child 'second_name'}}}></div>
+            <div class='mb-3' {{{:child 'login'}}}></div>
+            <div class='mb-3' {{{:child 'email'}}}></div>
+            <div class='mb-3' {{{:child 'password'}}}></div>
+            <div class='mb-3' {{{:child 'password2'}}}></div>
+            <div class='mb-3' {{{:child 'phone'}}}></div>
+            <div class='mb-3' {{{:child 'btnSignUp'}}}></div>
+            <div class='mb-3' {{{:child 'btnSignIn'}}}></div>
         </form>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { TApiClientParameters } from './Types'
+import { TApiClientParameters } from './types'
 import { queryStringify } from './utils'
 
 enum Method {

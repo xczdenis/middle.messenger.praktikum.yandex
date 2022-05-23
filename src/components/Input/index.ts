@@ -1,7 +1,8 @@
-import { TComponentProperties } from '../../modules/engine/shared/Types'
-import Component from './input'
+import { ComponentInput, TProps } from './component'
+import { TComponentData } from '../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'Input', props, events, validator } = data
-  return new Component(name, props, events, validator)
+const Input = (data: TComponentData<TProps> = {}): ComponentInput => {
+  return new ComponentInput(data)
 }
+
+export { Input }

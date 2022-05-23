@@ -2,7 +2,8 @@ import { v4 as uuidv4 } from 'uuid'
 import Validator from '../../validator'
 import { ClassInvalid } from '../../validator/config'
 import EventBus from '../reactivity/EventBus'
-import { TProps, TEvents, TFnWithArgs } from './Types'
+import { TBaseProps, TEvents } from './types'
+import { attributeChildren, dataAttrs } from './constants'
 
 abstract class BaseComponent {
   static EVENTS = {
@@ -16,9 +17,7 @@ abstract class BaseComponent {
 
   private readonly _meta: {
     tagName: string
-    events: TEvents
     validator: string
-    id: string
   }
 
   private _element: HTMLElement | null = null
@@ -27,42 +26,35 @@ abstract class BaseComponent {
 
   private _eventBus: () => EventBus
 
-  private _removeInvalidClass = (): void => {
-    const listener = this._getFirstChild()
-    if (listener) {
-      listener.classList.remove(ClassInvalid)
-    }
-  }
+  private _data: Record<string, unknown>
+
+  id: string
 
   name: string
 
-  props: Record<string, unknown>
+  props: TBaseProps
 
-  components: BaseComponent[] = []
+  events: TEvents
 
   constructor(
     name: string,
-    props: TProps = {},
+    props: TBaseProps = {},
     events: TEvents = {},
     validator = '',
     tagName = 'div'
   ) {
+    this.name = name
+    this.props = props
+    this.events = events
+    this.id = uuidv4()
+    this._meta = { tagName, validator }
     const eventBus = new EventBus()
     this._eventBus = () => eventBus
-    this.name = name
-    this.props = this._makePropsProxy(props)
-    const id = uuidv4()
-    this._meta = { tagName, events, id, validator }
     this._registerEvents(eventBus)
-    eventBus.emit(BaseComponent.EVENTS.INIT)
+    return this.makeProxyComponent()
   }
 
   private _registerEvents(eventBus: EventBus): void {
-    eventBus.on(BaseComponent.EVENTS.INIT, this._createResource.bind(this))
-    eventBus.on(
-      BaseComponent.EVENTS.INIT_SET_COMPONENTS,
-      this._setComponents.bind(this)
-    )
     eventBus.on(
       BaseComponent.EVENTS.INIT_VALIDATOR,
       this._initValidator.bind(this)
@@ -73,78 +65,89 @@ abstract class BaseComponent {
     )
     eventBus.on(BaseComponent.EVENTS.FLOW_CREATED, this.created.bind(this))
     eventBus.on(BaseComponent.EVENTS.FLOW_RENDER, this._render.bind(this))
-    eventBus.on(BaseComponent.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
-  private _createResource(): void {
-    this._eventBus().emit(BaseComponent.EVENTS.FLOW_BEFORE_CREATE)
-    this._element = this._createElement()
-    this._eventBus().emit(BaseComponent.EVENTS.INIT_SET_COMPONENTS)
-    this._eventBus().emit(BaseComponent.EVENTS.FLOW_RENDER)
-    this._eventBus().emit(BaseComponent.EVENTS.INIT_VALIDATOR)
-    this._eventBus().emit(BaseComponent.EVENTS.FLOW_CREATED)
-  }
+  private _makeProxyObject(): BaseComponent {
+    this._data = this.data()
+    for (const [key, value] of Object.entries(this._data)) {
+      Object.defineProperty(this, key, {
+        value: value,
+        writable: true,
+      })
+    }
+    this.setup()
 
-  private _initValidator(): void {
-    const { validator } = this._meta
-    if (validator) {
-      const listener = this._getFirstChild()
-      if (listener) {
-        const validatorInstance = new Validator(validator, listener)
-        const validatorFunction = validatorInstance.getValidator()
-        if (validatorFunction) {
-          this._validatorFunction = validatorFunction
-          this._addValidator()
-        }
+    const selfObject = Object.assign({}, { self: this })
+
+    const handler = () => {
+      return {
+        get(target: any, key: string): any {
+          if (
+            ['[object Object]', '[object Array]'].indexOf(
+              Object.prototype.toString.call(target[key])
+            ) > -1
+          ) {
+            return new Proxy(target[key], handler())
+          }
+          return Reflect.get(target, key)
+        },
+        set(target: any, key: string, value: any) {
+          Reflect.set(target, key, value)
+          if (target.hasOwnProperty(key)) {
+            selfObject.self.update()
+          }
+          return true
+        },
       }
     }
+
+    return new Proxy(this, handler())
+  }
+
+  private _makeProxyProps(props: TBaseProps): TBaseProps {
+    const selfObject = Object.assign({}, { self: this })
+    const handler = () => {
+      return {
+        get(target: any, key: string): any {
+          if (
+            ['[object Object]', '[object Array]'].indexOf(
+              Object.prototype.toString.call(target[key])
+            ) > -1
+          ) {
+            return new Proxy(target[key], handler())
+          }
+          return Reflect.get(target, key)
+        },
+        set(target: any, key: string, value: any) {
+          Reflect.set(target, key, value)
+          selfObject.self._render()
+          selfObject.self._mountChildren()
+          return true
+        },
+      }
+    }
+
+    return new Proxy(props, handler())
   }
 
   private _createElement(): HTMLElement {
     const { tagName, validator } = this._meta
     const element = document.createElement(tagName)
+    element.setAttribute('data-uuid', this.id)
     if (validator) {
       element.classList.add('needs-validation')
     }
     if (this.props.h100) {
       element.classList.add('h-10')
     }
-    element.setAttribute('data-uuid', this.id())
     return element
-  }
-
-  private _render(): void {
-    if (this._element) {
-      this._removeEvents()
-      this._element.innerHTML = this.render()
-      this._addEvents()
-    }
-  }
-
-  private _getFirstChild(): Element | null {
-    if (
-      this._element &&
-      this._element.children &&
-      this._element.children.length > 0
-    ) {
-      return this._element.children[0]
-    } else {
-      return this._element
-    }
-  }
-
-  private _updateResource(): void {
-    this.beforeUpdate()
-    this._eventBus().emit(BaseComponent.EVENTS.FLOW_RENDER)
-    this.updated()
   }
 
   private _addEvents(): void {
     const listener = this._getFirstChild()
     if (listener) {
-      const { events = {} } = this._meta
-      Object.keys(events).forEach((eventName) => {
-        listener.addEventListener(eventName, events[eventName])
+      Object.keys(this.events).forEach((eventName) => {
+        listener.addEventListener(eventName, this.events[eventName])
       })
     }
   }
@@ -162,9 +165,8 @@ abstract class BaseComponent {
   private _removeEvents(): void {
     const listener = this._getFirstChild()
     if (listener) {
-      const { events = {} } = this._meta
-      Object.keys(events).forEach((eventName) => {
-        listener.removeEventListener(eventName, events[eventName])
+      Object.keys(this.events).forEach((eventName) => {
+        listener.removeEventListener(eventName, this.events[eventName])
       })
       if (this._validatorFunction) {
         listener.removeEventListener('blur', this._validatorFunction)
@@ -173,54 +175,146 @@ abstract class BaseComponent {
     }
   }
 
-  private _makePropsProxy(props: Record<string, unknown>) {
-    return new Proxy(Object.assign({ self: this }, props), {
-      get(target, key: string) {
-        if (props.hasOwnProperty(key)) {
-          const value = target[key]
-          return typeof value === 'function' ? value.bind(target) : value
-        }
-      },
-      set(target, key: string, value: unknown) {
-        if (props.hasOwnProperty(key)) {
-          target[key] = value
-          target.self._updateResource()
-        }
-        return true
-      },
+  private _getContext<TValue>(): Record<string, TValue> {
+    const context: Record<string, TValue> = {}
+    Object.keys(this._data).forEach((key) => {
+      context[key] = Object.getOwnPropertyDescriptor(this, key)?.value
     })
+    return context
   }
 
-  private _setComponents(): void {
-    this.components = this.children()
+  private _getData<TValue>(key: string): TValue {
+    const context = this._getContext<TValue>()
+    return context[key]
   }
 
-  children(): BaseComponent[] {
-    return []
-  }
-
-  addListener(eventName: string, cb: TFnWithArgs): void {
-    this._meta.events[eventName] = cb
-    this._element?.addEventListener(eventName, cb)
-  }
-
-  setProps(nextProps: Record<string, unknown>): void {
-    if (!nextProps) {
-      return
+  private _updateData(dataName: string): void {
+    const dataNameArray = dataName.split('.')
+    const dataKey = dataNameArray[0]
+    if (dataKey === attributeChildren) {
+      this._mountChildren(dataNameArray[1])
+    } else {
+      const targetElement = this._element?.querySelector(
+        `[${dataAttrs.content}="${dataKey}"]`
+      )
+      if (targetElement) {
+        targetElement.textContent = String(this._getData(dataKey))
+      }
     }
-    Object.assign(this.props, nextProps)
   }
 
-  getContent(): HTMLElement | null {
+  private _initValidator(): void {
+    const { validator } = this._meta
+    if (validator) {
+      const listener = this._getFirstChild()
+      if (listener) {
+        const validatorInstance = new Validator(validator, listener)
+        const validatorFunction = validatorInstance.getValidator()
+        if (validatorFunction) {
+          this._validatorFunction = validatorFunction
+          this._addValidator()
+        }
+      }
+    }
+  }
+
+  private _getChildrenContainer(
+    collectionName: string,
+    parentNode: Element | null = null
+  ): Element | undefined | null {
+    const parent = parentNode ? parentNode : this._element
+    return parent?.querySelector(`[${dataAttrs.child}="${collectionName}"]`)
+  }
+
+  private _mountChildren(collectionName = ''): void {
+    const childrenObject =
+      this._getData<Record<string, BaseComponent[]>>(attributeChildren)
+    if (childrenObject) {
+      Object.keys(childrenObject).forEach((collection) => {
+        if (!collectionName || collection === collectionName) {
+          const childrenContainer = this._getChildrenContainer(collection)
+          if (childrenContainer) {
+            childrenObject[collection].forEach((child) => {
+              if (!child.isMounted(childrenContainer)) {
+                child.mount(
+                  `[${dataAttrs.child}="${collection}"]`,
+                  this._element
+                )
+              }
+            })
+          }
+        }
+      })
+    }
+    for (const [key, descriptor] of Object.entries(
+      Object.getOwnPropertyDescriptors(this)
+    )) {
+      if (this.isComponent(descriptor.value)) {
+        descriptor.value.mount(`[${dataAttrs.child}="${key}"]`, this._element)
+      }
+    }
+  }
+
+  private _render(): void {
+    if (this._element) {
+      this._removeEvents()
+      this._element.innerHTML = this.render()
+      this._addEvents()
+    }
+  }
+
+  protected _getFirstChild(): Element | null {
+    if (
+      this._element &&
+      this._element.children &&
+      this._element.children.length > 0
+    ) {
+      return this._element.children[0]
+    } else {
+      return this._element
+    }
+  }
+
+  private _removeInvalidClass = (): void => {
+    const listener = this._getFirstChild()
+    if (listener) {
+      listener.classList.remove(ClassInvalid)
+    }
+  }
+
+  protected isMounted(parentNode: Element | null = null): boolean {
+    const parent = parentNode ? parentNode : document
+    return !!parent.querySelector(`[${dataAttrs.uid}="${this.id}"]`)
+  }
+
+  protected isComponent(value: unknown): value is BaseComponent {
+    return value instanceof BaseComponent
+  }
+
+  makeProxyComponent(): BaseComponent {
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_BEFORE_CREATE)
+    const proxyObject = this._makeProxyObject()
+    this._element = this._createElement()
+    this.props = this._makeProxyProps(this.props)
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_RENDER)
+    this._eventBus().emit(BaseComponent.EVENTS.INIT_VALIDATOR)
+    this._eventBus().emit(BaseComponent.EVENTS.FLOW_CREATED)
+    return proxyObject
+  }
+
+  getContextData(): Record<string, unknown> {
+    return Object.assign({}, { id: this.id }, this.props, this._data)
+  }
+
+  addEvent(eventName: string, cb: () => void): void {
+    const listener = this._getFirstChild()
+    if (listener) {
+      listener.addEventListener(eventName, cb)
+    }
+  }
+
+  getElement(): HTMLElement | null {
     return this._element
-  }
-
-  id(): string {
-    return this._meta.id
-  }
-
-  render(): string {
-    return ''
   }
 
   mount(query: string, container: HTMLElement | null = null): void {
@@ -228,18 +322,30 @@ abstract class BaseComponent {
     const rootContainer = container ? container : document
     const root = rootContainer.querySelector(query)
     if (root) {
-      const element = this.getContent()
+      const element = this.getElement()
       if (element) {
         root.appendChild(element)
-        this.components.forEach((component) => {
-          component.mount(
-            `[data-child-component="${component.name}"]`,
-            this._element
-          )
-        })
+        this._mountChildren()
       }
     }
     this.mounted()
+  }
+
+  data(): Record<string, unknown> {
+    return {}
+  }
+
+  setup(): void {}
+
+  render(): string {
+    return ''
+  }
+
+  update(Attrs: string[] = []): void {
+    this.beforeUpdate()
+    const keysArray = Attrs.length > 0 ? Attrs : Object.keys(this._data)
+    keysArray.forEach((dataName) => this._updateData(dataName))
+    this.updated()
   }
 
   beforeCreate(): void {}

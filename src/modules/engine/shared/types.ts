@@ -1,12 +1,12 @@
 export type TFnWithArgs = <T>(...args: T[]) => void
 
-export type TProps = Record<string, TFnWithArgs | unknown>
+export type TBaseProps = Record<string, TFnWithArgs | unknown>
 
 export type TEvents = Record<string, TFnWithArgs>
 
-export type TComponentProperties = {
+export type TComponentData<Props> = {
   name?: string
-  props?: TProps
+  props?: Props
   events?: TEvents
   validator?: string
 }

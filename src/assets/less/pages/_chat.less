@@ -1,17 +1,28 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the Chat page
 // -----------------------------------------------------------------------------
-@import "../layout/_grid";
-@import "../abstracts/_variables";
 @import "../abstracts/_borders";
+@import "../abstracts/_functions";
+@import "../abstracts/_variables";
+@import "../layout/_grid";
 
 .page-settings() {
   @message-box-radius: 10px;
+
+  @color-bg-chat-list-name: --color-bg-chat-feed;
+  @color-bg-chat-list-values: @glob-color-light, #17212b;
+  @color-bg-chat-list: var(@color-bg-chat-list-name);
+
+  @color-bg-msg-received-name: --color-bg-msg-received;
+  @color-bg-msg-received-values: @glob-color-light, #182533;
+  @color-bg-msg-received: var(@color-bg-msg-received-name);
 }
 
 .page {
 
   .page-settings();
+  .make_colors(@color-bg-msg-received-name, @color-bg-msg-received-values);
+  .make_colors(@color-bg-chat-list-name, @color-bg-chat-list-values);
 
   .chat-container {
     width: 100%;
@@ -20,7 +31,7 @@
     padding: 0;
 
     .chat-list-container {
-      background: @glob-color-light;
+      background: @color-bg-chat-list;
       height: 100%;
       overflow: auto;
       padding: @glob-ident2;
@@ -46,6 +57,7 @@
       height: 100%;
       overflow: auto;
       padding: 0;
+      background: @glob-color-white;
 
       .chat-feed__message-row {
         margin: @glob-ident3 0;
@@ -73,7 +85,8 @@
         border-radius: @message-box-radius;
 
         &.received {
-          background: @glob-color-light;
+          color: @glob-color-dark;
+          background: @color-bg-msg-received;
           border-top-left-radius: 0;
         }
 

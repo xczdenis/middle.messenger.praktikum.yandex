@@ -1,7 +1,8 @@
-import { TComponentProperties } from '../../../modules/engine/shared/Types'
-import Component from './chatList'
+import { ComponentChatList, TProps } from './component'
+import { TComponentData } from '../../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'ChatListItem', props, events } = data
-  return new Component(name, props, events)
+const ChatList = (data: TComponentData<TProps> = {}): ComponentChatList => {
+  return new ComponentChatList(data)
 }
+
+export { ChatList }
