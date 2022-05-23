@@ -17,7 +17,9 @@
 @glob-color-green: #198754;
 @glob-color-teal: #20c997;
 @glob-color-cyan: #0dcaf0;
-@glob-color-white: #fff;
+@glob-color-base-black: #0e1621;
+@glob-color-base-white: #fff;
+//@glob-color-white: #fff;
 @glob-color-gray: #6c757d;
 @glob-color-gray-dark: #343a40;
 @glob-color-light-dark: #495057;
@@ -29,8 +31,7 @@
 @glob-color-gray-600: #6c757d;
 @glob-color-gray-700: #495057;
 @glob-color-gray-800: #343a40;
-@glob-color-gray-900: #212529;
-@glob-color-primary: #0d6efd;
+@glob-color-gray-900: #182533;
 @glob-color-light-primary: #86b7fe;
 @glob-color-secondary: #6c757d;
 @glob-color-success: #198754;
@@ -38,10 +39,41 @@
 @glob-color-warning: #ffc107;
 @glob-color-danger: #dc3545;
 @glob-color-light: #f8f9fa;
-@glob-color-dark: #212529;
-@glob-color-border: #ced4da;
+//@glob-color-dark: #212529;
+//@glob-color-border: #ced4da;
 @glob-color-muted: #6c757d;
-@glob-color-hover: #e3e4e7;
+//@glob-color-hover: #e3e4e7;
+
+// -----------------------------------------------------------------------------
+// THEMES
+// -----------------------------------------------------------------------------
+@glob-theme-light: theme-light;
+@glob-theme-dark: theme-dark;
+@glob-themes: @glob-theme-light, @glob-theme-dark;
+
+@glob-color-white-name: --color-white;
+@glob-color-white-values: @glob-color-base-white, @glob-color-base-black;
+@glob-color-white: var(@glob-color-white-name);
+
+@glob-color-primary-name: --color-primary;
+@glob-color-primary-values: @glob-color-blue, @glob-color-base-white;
+@glob-color-primary: var(@glob-color-primary-name);
+
+@glob-color-dark-name: --color-dark;
+@glob-color-dark-values: @glob-color-base-black, @glob-color-base-white;
+@glob-color-dark: var(@glob-color-dark-name);
+
+@glob-color-card-name: --color-card;
+@glob-color-card-values: @glob-color-base-white, @glob-color-gray-900;
+@glob-color-card: var(@glob-color-card-name);
+
+@glob-color-border-name: --color-border;
+@glob-color-border-values: #ced4da, #17212b;
+@glob-color-border: var(@glob-color-border-name);
+
+@glob-color-hover-name: --color-hover;
+@glob-color-hover-values: #e3e4e7, #25303e;
+@glob-color-hover: var(@glob-color-hover-name);
 
 // -----------------------------------------------------------------------------
 // IDENT
@@ -68,70 +100,3 @@
 
 @glob-text-font-stack: 'Ubuntu', 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @glob-code-font-stack: Inconsolata, monospace;
-
-//$base-url: '/assets/' !default;
-//
-///// Breakpoints map
-///// @prop {String} keys - Keys are identifiers mapped to a given length
-///// @prop {Map} values - Values are actual breakpoints expressed in pixels
-//$breakpoints: (
-//        'xs': 320px,
-//        'sm': 576px,
-//        'md': 768px,
-//        'lg': 992px,
-//        'xl': 1200px,
-//        'xxl': 1400px,
-//) !default;
-//
-
-//
-//
-//// -----------------------------------------------------------------------------
-//// COLORS LIBRARY
-//// -----------------------------------------------------------------------------
-//
-//$color-blue: #248afd !default;
-//$color-gray: #ccc !default;
-//$color-green: #198754 !default;
-//$color-dark: #212529 !default;
-//$color-light-dark: #495057 !default;
-//$color-red: #dc3545 !default;
-//$color-white: #fff !default;
-//
-//
-//// -----------------------------------------------------------------------------
-//// BRAND COLORS
-//// -----------------------------------------------------------------------------
-//
-//$color-primary: $color-blue !default;
-//$color-success: $color-green !default;
-//$color-danger: $color-red !default;
-//$color-text-muted: #6c757d !default;
-//$border-color: #dee2e6 !default;
-//$hover-color-base: #f8f9fa !default;
-//$hover-color-light-blue: #e0f0ff !default;
-//
-//$pycharm-background-color: #282c34 !default;
-//$pycharm-navbar-color: #2f333d !default;
-//
-//$repl-background-color: #0e1525 !default;
-//$repl-code-background-color: #1c2333 !default;
-//
-//
-//// -----------------------------------------------------------------------------
-//// BACKGROUND COLOR
-//// -----------------------------------------------------------------------------
-//
-//$bg-code: $pycharm-background-color !default;
-//$bg-code-editor-navbar: $pycharm-navbar-color !default;
-//$bg-animated-color1: #d4d4d4;
-//$bg-animated-color2: $color-white !default;
-//
-//
-//// -----------------------------------------------------------------------------
-//// SIZING
-//// -----------------------------------------------------------------------------
-//
-//$bg-animated-stripe-size: 50px;
-//$main-menu-height: 58px;
-//$code-editor-navbar-height: 38px;

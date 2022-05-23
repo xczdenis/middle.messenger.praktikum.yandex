@@ -1,7 +1,8 @@
-import { TComponentProperties } from '../../modules/engine/shared/Types'
-import Component from './avatar'
+import { ComponentAvatar, TProps } from './component'
+import { TComponentData } from '../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'Avatar', props, events } = data
-  return new Component(name, props, events)
+const Avatar = (data: TComponentData<TProps> = {}): ComponentAvatar => {
+  return new ComponentAvatar(data)
 }
+
+export { Avatar }

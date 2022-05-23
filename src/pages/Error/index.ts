@@ -1,7 +1,8 @@
-import { TComponentProperties } from '../../modules/engine/shared/Types'
-import Component from './error'
+import { ComponentError, TProps } from './component'
+import { TComponentData } from '../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'Error', props, events } = data
-  return new Component(name, props, events)
+const Error = (data: TComponentData<TProps> = {}): ComponentError => {
+  return new ComponentError(data)
 }
+
+export { Error }

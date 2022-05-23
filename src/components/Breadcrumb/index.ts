@@ -1,7 +1,8 @@
-import { TComponentProperties } from '../../modules/engine/shared/Types'
-import Component from './breadcrumb'
+import { ComponentBreadcrumb, TProps } from './component'
+import { TComponentData } from '../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'Breadcrumb', props, events } = data
-  return new Component(name, props, events)
+const Breadcrumb = (data: TComponentData<TProps> = {}): ComponentBreadcrumb => {
+  return new ComponentBreadcrumb(data)
 }
+
+export { Breadcrumb }

@@ -77,3 +77,18 @@
 
   .make-container(@bp-index + 1);
 }
+
+.make_colors(@color-name, @color-values, @i: 1) when (@i =< length(@color-values)) {
+  @theme: extract(@glob-themes, @i);
+  @color-value: extract(@color-values, @i);
+
+  :root when (@i = 1) {
+      @{color-name}: @color-value;
+  }
+
+  .@{theme} {
+      @{color-name}: @color-value;
+  }
+
+  .make_colors(@color-name, @color-values, @i + 1);
+}

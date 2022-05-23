@@ -1,7 +1,10 @@
-import { TComponentProperties } from '../../../modules/engine/shared/Types'
-import Component from './changePassword'
+import { ComponentChangePassword, TProps } from './component'
+import { TComponentData } from '../../../modules/engine/shared/types'
 
-export default (data: TComponentProperties = {}): Component => {
-  const { name = 'ChangePassword', props, events } = data
-  return new Component(name, props, events)
+const ChangePassword = (
+  data: TComponentData<TProps> = {}
+): ComponentChangePassword => {
+  return new ComponentChangePassword(data)
 }
+
+export { ChangePassword }

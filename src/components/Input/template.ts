@@ -3,6 +3,8 @@ export default `
   type='{{type}}'
   name='{{name}}'
   class='{{class}}'
-  placeholder='{{placeholder}}'>
+  placeholder='{{placeholder}}'
+  autocomplete='{{autocomplete}}'
+  >
 <div class='validation-feedback'>Ошибка</div>
 `

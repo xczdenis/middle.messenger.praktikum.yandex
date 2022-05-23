@@ -1,14 +1,12 @@
 import UserService from '../../../modules/services/UserService'
+import { ComponentProfile } from './component'
 
-export const changeProfile = function () {
-  const form = this.form
-  if (form) {
-    UserService.changeProfile(
-      form.elements.first_name.value,
-      form.elements.second_name.value,
-      form.elements.login.value,
-      form.elements.email.value,
-      form.elements.phone.value
-    ).then()
-  }
+export const changeProfile = (self: ComponentProfile) => (): void => {
+  UserService.changeProfile(
+    self.first_name.getValue(),
+    self.second_name.getValue(),
+    self.login.getValue(),
+    self.email.getValue(),
+    self.phone.getValue()
+  ).then()
 }
