@@ -1,4 +1,5 @@
 const STATUS_CODE_ARRAY_OK = [200]
+const STATUS_CODE_ARRAY_BAD_REQUEST = [400]
 
 class XhrResponse {
   private readonly _xhr: XMLHttpRequest
@@ -12,6 +13,10 @@ class XhrResponse {
 
   isOk(): boolean {
     return !!STATUS_CODE_ARRAY_OK.find((item) => item === this._xhr.status)
+  }
+
+  isBadRequest(): boolean {
+    return !!STATUS_CODE_ARRAY_BAD_REQUEST.find((item) => item === this._xhr.status)
   }
 
   parseResponse(): any {
@@ -34,6 +39,10 @@ class XhrResponse {
 
   getReason(): string {
     return this.getData<string>('reason') || this.response
+  }
+
+  getStatusCode(): number {
+    return this._xhr.status
   }
 }
 

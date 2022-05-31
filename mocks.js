@@ -1,10 +1,6 @@
 const jsdom = require('jsdom')
 const { JSDOM } = jsdom
 
-// class XMLHttpRequest {}
-
-// global.XMLHttpRequest = XMLHttpRequest
-
 const dom = new JSDOM(
   `<!doctype html>
 <html lang='en'>
