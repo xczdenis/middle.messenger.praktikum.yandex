@@ -3,6 +3,7 @@ import t from '../../modules/templator'
 import BaseComponent from '../../modules/engine/shared/BaseComponent'
 import { TComponentData } from '../../modules/engine/shared/types'
 import { isInput } from '../../utils/typeGuards'
+import sanitizeHtml from 'sanitize-html'
 
 type TProps = {
   type?: string
@@ -36,7 +37,7 @@ class Component extends BaseComponent {
   getValue(): string {
     const input = this._getFirstChild()
     if (isInput(input)) {
-      return input.value
+      return sanitizeHtml(input.value)
     }
     return ''
   }

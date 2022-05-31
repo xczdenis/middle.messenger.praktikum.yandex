@@ -28,6 +28,8 @@ abstract class BaseComponent {
 
   private _data: Record<string, unknown>
 
+  private _listeners: Record<string, (...args: any[]) => void> = {}
+
   id: string
 
   name: string
@@ -36,13 +38,7 @@ abstract class BaseComponent {
 
   events: TEvents
 
-  constructor(
-    name: string,
-    props: TBaseProps = {},
-    events: TEvents = {},
-    validator = '',
-    tagName = 'div'
-  ) {
+  constructor(name: string, props: TBaseProps = {}, events: TEvents = {}, validator = '', tagName = 'div') {
     this.name = name
     this.props = props
     this.events = events
@@ -54,15 +50,83 @@ abstract class BaseComponent {
     return this.makeProxyComponent()
   }
 
+  public getContextData(): Record<string, unknown> {
+    return Object.assign({}, { id: this.id }, this.props, this._data)
+  }
+
+  public addEvent(eventName: string, cb: () => void): void {
+    const listener = this._getFirstChild()
+    if (listener) {
+      if (!this._listeners[eventName]) {
+        this._addListener(eventName, cb)
+        listener.addEventListener(eventName, (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          cb()
+        })
+      }
+    }
+  }
+
+  public getElement(): HTMLElement | null {
+    return this._element
+  }
+
+  public mount(query: string, container: HTMLElement | null = null): void {
+    this.beforeMount()
+    const rootContainer = container ? container : document
+    const root = rootContainer.querySelector(query)
+    if (root) {
+      const element = this.getElement()
+      if (element) {
+        root.appendChild(element)
+        this._mountChildren()
+      }
+    }
+    this.mounted()
+  }
+
+  public data(): Record<string, unknown> {
+    return {}
+  }
+
+  public setup(): void {}
+
+  public render(): string {
+    return ''
+  }
+
+  public update(Attrs: string[] = []): void {
+    this.beforeUpdate()
+    const keysArray = Attrs.length > 0 ? Attrs : Object.keys(this._data)
+    keysArray.forEach((dataName) => this._updateData(dataName))
+    this.updated()
+  }
+
+  public beforeCreate(): void {}
+
+  public created(): void {}
+
+  public beforeMount(): void {}
+
+  public mounted(): void {}
+
+  public beforeUpdate(): void {}
+
+  public updated(): void {}
+
+  protected isMounted(parentNode: Element | null = null): boolean {
+    const parent = parentNode ? parentNode : document
+    return !!parent.querySelector(`[${dataAttrs.uid}="${this.id}"]`)
+  }
+
+  protected isComponent(value: unknown): value is BaseComponent {
+    return value instanceof BaseComponent
+  }
+
   private _registerEvents(eventBus: EventBus): void {
-    eventBus.on(
-      BaseComponent.EVENTS.INIT_VALIDATOR,
-      this._initValidator.bind(this)
-    )
-    eventBus.on(
-      BaseComponent.EVENTS.FLOW_BEFORE_CREATE,
-      this.beforeCreate.bind(this)
-    )
+    eventBus.on(BaseComponent.EVENTS.INIT_VALIDATOR, this._initValidator.bind(this))
+    eventBus.on(BaseComponent.EVENTS.FLOW_BEFORE_CREATE, this.beforeCreate.bind(this))
     eventBus.on(BaseComponent.EVENTS.FLOW_CREATED, this.created.bind(this))
     eventBus.on(BaseComponent.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
@@ -83,9 +147,7 @@ abstract class BaseComponent {
       return {
         get(target: any, key: string): any {
           if (
-            ['[object Object]', '[object Array]'].indexOf(
-              Object.prototype.toString.call(target[key])
-            ) > -1
+            ['[object Object]', '[object Array]'].indexOf(Object.prototype.toString.call(target[key])) > -1
           ) {
             return new Proxy(target[key], handler())
           }
@@ -110,9 +172,7 @@ abstract class BaseComponent {
       return {
         get(target: any, key: string): any {
           if (
-            ['[object Object]', '[object Array]'].indexOf(
-              Object.prototype.toString.call(target[key])
-            ) > -1
+            ['[object Object]', '[object Array]'].indexOf(Object.prototype.toString.call(target[key])) > -1
           ) {
             return new Proxy(target[key], handler())
           }
@@ -147,7 +207,11 @@ abstract class BaseComponent {
     const listener = this._getFirstChild()
     if (listener) {
       Object.keys(this.events).forEach((eventName) => {
-        listener.addEventListener(eventName, this.events[eventName])
+        listener.addEventListener(eventName, (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          this.events[eventName]()
+        })
       })
     }
   }
@@ -194,9 +258,7 @@ abstract class BaseComponent {
     if (dataKey === attributeChildren) {
       this._mountChildren(dataNameArray[1])
     } else {
-      const targetElement = this._element?.querySelector(
-        `[${dataAttrs.content}="${dataKey}"]`
-      )
+      const targetElement = this._element?.querySelector(`[${dataAttrs.content}="${dataKey}"]`)
       if (targetElement) {
         targetElement.textContent = String(this._getData(dataKey))
       }
@@ -218,39 +280,44 @@ abstract class BaseComponent {
     }
   }
 
+  private _getChildContainerName(collectionName: string): string {
+    return `${collectionName}-${this.id}`
+  }
+
   private _getChildrenContainer(
     collectionName: string,
     parentNode: Element | null = null
   ): Element | undefined | null {
     const parent = parentNode ? parentNode : this._element
-    return parent?.querySelector(`[${dataAttrs.child}="${collectionName}"]`)
+    return parent?.querySelector(`[${dataAttrs.child}="${this._getChildContainerName(collectionName)}"]`)
   }
 
   private _mountChildren(collectionName = ''): void {
-    const childrenObject =
-      this._getData<Record<string, BaseComponent[]>>(attributeChildren)
+    const childrenObject = this._getData<Record<string, BaseComponent[]>>(attributeChildren)
     if (childrenObject) {
       Object.keys(childrenObject).forEach((collection) => {
         if (!collectionName || collection === collectionName) {
           const childrenContainer = this._getChildrenContainer(collection)
           if (childrenContainer) {
-            childrenObject[collection].forEach((child) => {
-              if (!child.isMounted(childrenContainer)) {
-                child.mount(
-                  `[${dataAttrs.child}="${collection}"]`,
-                  this._element
-                )
-              }
-            })
+            if (childrenObject[collection].length) {
+              childrenObject[collection].forEach((child) => {
+                if (!child.isMounted(childrenContainer)) {
+                  child.mount(
+                    `[${dataAttrs.child}="${this._getChildContainerName(collection)}"]`,
+                    this._element
+                  )
+                }
+              })
+            } else {
+              childrenContainer.innerHTML = ''
+            }
           }
         }
       })
     }
-    for (const [key, descriptor] of Object.entries(
-      Object.getOwnPropertyDescriptors(this)
-    )) {
+    for (const [, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(this))) {
       if (this.isComponent(descriptor.value)) {
-        descriptor.value.mount(`[${dataAttrs.child}="${key}"]`, this._element)
+        descriptor.value.mount(`[${dataAttrs.child}="${descriptor.value.id}"]`, this._element)
       }
     }
   }
@@ -264,11 +331,7 @@ abstract class BaseComponent {
   }
 
   protected _getFirstChild(): Element | null {
-    if (
-      this._element &&
-      this._element.children &&
-      this._element.children.length > 0
-    ) {
+    if (this._element && this._element.children && this._element.children.length > 0) {
       return this._element.children[0]
     } else {
       return this._element
@@ -282,16 +345,11 @@ abstract class BaseComponent {
     }
   }
 
-  protected isMounted(parentNode: Element | null = null): boolean {
-    const parent = parentNode ? parentNode : document
-    return !!parent.querySelector(`[${dataAttrs.uid}="${this.id}"]`)
+  private _addListener(eventName: string, cb: (...args: any[]) => void): void {
+    this._listeners[eventName] = cb
   }
 
-  protected isComponent(value: unknown): value is BaseComponent {
-    return value instanceof BaseComponent
-  }
-
-  makeProxyComponent(): BaseComponent {
+  private makeProxyComponent(): BaseComponent {
     this._eventBus().emit(BaseComponent.EVENTS.FLOW_BEFORE_CREATE)
     const proxyObject = this._makeProxyObject()
     this._element = this._createElement()
@@ -301,64 +359,6 @@ abstract class BaseComponent {
     this._eventBus().emit(BaseComponent.EVENTS.FLOW_CREATED)
     return proxyObject
   }
-
-  getContextData(): Record<string, unknown> {
-    return Object.assign({}, { id: this.id }, this.props, this._data)
-  }
-
-  addEvent(eventName: string, cb: () => void): void {
-    const listener = this._getFirstChild()
-    if (listener) {
-      listener.addEventListener(eventName, cb)
-    }
-  }
-
-  getElement(): HTMLElement | null {
-    return this._element
-  }
-
-  mount(query: string, container: HTMLElement | null = null): void {
-    this.beforeMount()
-    const rootContainer = container ? container : document
-    const root = rootContainer.querySelector(query)
-    if (root) {
-      const element = this.getElement()
-      if (element) {
-        root.appendChild(element)
-        this._mountChildren()
-      }
-    }
-    this.mounted()
-  }
-
-  data(): Record<string, unknown> {
-    return {}
-  }
-
-  setup(): void {}
-
-  render(): string {
-    return ''
-  }
-
-  update(Attrs: string[] = []): void {
-    this.beforeUpdate()
-    const keysArray = Attrs.length > 0 ? Attrs : Object.keys(this._data)
-    keysArray.forEach((dataName) => this._updateData(dataName))
-    this.updated()
-  }
-
-  beforeCreate(): void {}
-
-  created(): void {}
-
-  beforeMount(): void {}
-
-  mounted(): void {}
-
-  beforeUpdate(): void {}
-
-  updated(): void {}
 }
 
 export default BaseComponent

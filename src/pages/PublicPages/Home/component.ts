@@ -1,10 +1,7 @@
 import template from './template'
 import t from '../../../modules/templator'
 import BaseComponent from '../../../modules/engine/shared/BaseComponent'
-import {
-  TBaseProps,
-  TComponentData,
-} from '../../../modules/engine/shared/types'
+import { TBaseProps, TComponentData } from '../../../modules/engine/shared/types'
 
 type TProps = TBaseProps
 
