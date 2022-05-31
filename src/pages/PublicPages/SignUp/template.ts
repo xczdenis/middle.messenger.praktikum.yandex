@@ -8,17 +8,18 @@ export default `
         </div>
         <div class='card-body text-center'>
           <form>
-            <div class='mb-3' {{{:child 'first_name'}}}></div>
-            <div class='mb-3' {{{:child 'second_name'}}}></div>
-            <div class='mb-3' {{{:child 'login'}}}></div>
-            <div class='mb-3' {{{:child 'email'}}}></div>
-            <div class='mb-3' {{{:child 'password'}}}></div>
-            <div class='mb-3' {{{:child 'password2'}}}></div>
-            <div class='mb-3' {{{:child 'phone'}}}></div>
-            <div class='mb-3' {{{:child 'btnSignUp'}}}></div>
-            <div class='mb-3' {{{:child 'btnSignIn'}}}></div>
-        </form>
+            <div class='mb-3' {{{:child this.first_name}}}></div>
+            <div class='mb-3' {{{:child this.second_name}}}></div>
+            <div class='mb-3' {{{:child this.login}}}></div>
+            <div class='mb-3' {{{:child this.email}}}></div>
+            <div class='mb-3' {{{:child this.password}}}></div>
+            <div class='mb-3' {{{:child this.password2}}}></div>
+            <div class='mb-3' {{{:child this.phone}}}></div>
+            <div class='mb-3' {{{:child this.btnSignUp}}}></div>
+            <div class='mb-3' {{{:child this.btnSignIn}}}></div>
+          </form>
         </div>
+        <div {{{:child this.errorText}}}></div>
       </div>
     </div>
   </div>

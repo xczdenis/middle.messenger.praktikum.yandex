@@ -1,28 +1,28 @@
 // -----------------------------------------------------------------------------
-// This file contains all styles related to the Chat page
+// This file contains all styles related to the Messenger page
 // -----------------------------------------------------------------------------
 @import "../abstracts/_borders";
 @import "../abstracts/_functions";
 @import "../abstracts/_variables";
 @import "../layout/_grid";
 
+@color-bg-chat-list-name: --color-bg-chat-feed;
+@color-bg-chat-list-values: @glob-color-light, #17212b;
+@color-bg-chat-list: var(@color-bg-chat-list-name);
+.make_colors(@color-bg-chat-list-name, @color-bg-chat-list-values);
+
+@color-bg-msg-received-name: --color-bg-msg-received;
+@color-bg-msg-received-values: @glob-color-light, #182533;
+@color-bg-msg-received: var(@color-bg-msg-received-name);
+.make_colors(@color-bg-msg-received-name, @color-bg-msg-received-values);
+
 .page-settings() {
   @message-box-radius: 10px;
-
-  @color-bg-chat-list-name: --color-bg-chat-feed;
-  @color-bg-chat-list-values: @glob-color-light, #17212b;
-  @color-bg-chat-list: var(@color-bg-chat-list-name);
-
-  @color-bg-msg-received-name: --color-bg-msg-received;
-  @color-bg-msg-received-values: @glob-color-light, #182533;
-  @color-bg-msg-received: var(@color-bg-msg-received-name);
 }
 
 .page {
 
   .page-settings();
-  .make_colors(@color-bg-msg-received-name, @color-bg-msg-received-values);
-  .make_colors(@color-bg-chat-list-name, @color-bg-chat-list-values);
 
   .chat-container {
     width: 100%;
@@ -36,7 +36,7 @@
       overflow: auto;
       padding: @glob-ident2;
 
-      .chat-list__dialogue {
+      .chat {
         .page.border-top;
         cursor: pointer;
         margin: 0;
@@ -45,8 +45,31 @@
         &.active {
           background: @glob-color-light-blue;
         }
+
+        .btn-menu {
+          color: @glob-color-base-black;
+          background-color: @color-bg-chat-list;
+          border-color: @color-bg-chat-list;
+        }
+
+        .chat__menu {
+          position: absolute;
+          top: 40px;
+          right: 0;
+          width: 130px;
+          background: @color-bg-chat-list;
+          border-radius: 5px;
+          z-index: 1000;
+          border: 1px solid @glob-color-border;
+          color: @glob-color-base-black;
+
+          .nav-link:hover {
+            background: @glob-color-hover;
+          }
+        }
       }
-      .chat-list__dialogue:hover {
+
+      .chat:hover {
         background: @glob-color-hover;
       }
     }
@@ -61,9 +84,11 @@
 
       .chat-feed__message-row {
         margin: @glob-ident3 0;
+
         &.received {
           text-align: left;
         }
+
         &.sent {
           text-align: right;
         }
@@ -72,9 +97,11 @@
       .chat-feed__message-box {
         width: fit-content;
         display: inline-block;
+
         &.received {
           text-align: left;
         }
+
         &.sent {
           text-align: right;
         }
@@ -98,7 +125,7 @@
 
     }
 
-    //.mixin_thin-gray-scroll(Chat-feed-container);
+    //.mixin_thin-gray-scroll(Messenger-feed-container);
 
   }
 

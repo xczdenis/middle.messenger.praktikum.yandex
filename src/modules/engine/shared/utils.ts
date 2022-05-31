@@ -1,3 +1,5 @@
+import { isString } from '../../../utils/typeGuards'
+
 export function encode(input: string): string {
   try {
     return encodeURIComponent(input)
@@ -6,12 +8,13 @@ export function encode(input: string): string {
   }
 }
 
-export function queryStringify(data: Record<string, string>) {
+export function queryStringify(data: Record<string, unknown>) {
   const pairs: string[] = []
   Object.keys(data).forEach((key) => {
-    if (data[key]) {
+    const value = data[key]
+    if (value && isString(value)) {
       const kEncode = encode(key)
-      const vEncode = encode(data[key])
+      const vEncode = encode(value)
       if (kEncode && vEncode) {
         pairs.push(kEncode + '=' + vEncode)
       }
