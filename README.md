@@ -22,3 +22,4 @@
 ## Pull requests
 1. [Sprint 1](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/4)
 2. [Sprint 2](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/7)
+3. [Sprint 3](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/12)
