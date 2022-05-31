@@ -11,6 +11,8 @@ import { Button } from '../../../components/Button'
 import { Text } from '../../../components/Text'
 import { router } from '../../../modules/engine/router/router'
 import { Controller } from './controller'
+import AuthService from '../../../modules/services/api/AuthService'
+import { XhrResponse } from '../../../utils/xhrResponse'
 
 type TProps = TBaseProps
 
@@ -64,6 +66,21 @@ class Component extends BaseComponent {
   render(): string {
     const context = this.getContextData()
     return t.compile(template)(context)
+  }
+
+  mount(query: string, container: HTMLElement | null = null) {
+    AuthService.getUserInfo()
+      .then((xhr) => {
+        const response = new XhrResponse(xhr)
+        if (response.isOk()) {
+          router.go('/messenger')
+        } else {
+          super.mount(query, container)
+        }
+      })
+      .catch(() => {
+        super.mount(query, container)
+      })
   }
 
   mounted() {
