@@ -1,7 +1,6 @@
 export default `
-<div class='avatar-wrapper shadow'>
-  <img class='profile-pic' src='' />
-  <div class='upload-button'></div>
-  <input name='avatar' {{#if form_name}}form={{"form_name"}}{{/if}} class='file-upload' type='file' accept='image/*'/>
-</div>
-`
+<form id='{{formId}}'>
+  <input id='avatar' type='file' name='avatar' accept='image/*'>
+  <div {{{:child this.btnSave }}}></div>
+</form>
+<img src='{{avatarURL}}' alt=''>`

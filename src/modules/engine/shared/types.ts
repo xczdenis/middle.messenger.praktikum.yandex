@@ -1,4 +1,4 @@
-export type TFnWithArgs = <T>(...args: T[]) => void
+export type TFnWithArgs = (...args: any[]) => void
 
 export type TBaseProps = Record<string, TFnWithArgs | unknown>
 

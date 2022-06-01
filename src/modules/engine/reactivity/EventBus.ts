@@ -18,16 +18,15 @@ class EventBus {
     if (!this._listeners[event]) {
       throw new Error(`Event ${event} not detected`)
     }
-    this._listeners[event] = this._listeners[event].filter(
-      (listener) => listener !== callback
-    )
+    this._listeners[event] = this._listeners[event].filter((listener) => listener !== callback)
   }
 
   emit(event: string, ...args: readonly unknown[]): void {
-    if (!this._listeners[event]) {
-      throw new Error(`Event ${event} not detected`)
+    if (this._listeners[event]) {
+      this._listeners[event].forEach((listener) => {
+        listener(...args)
+      })
     }
-    this._listeners[event].forEach((listener) => listener(...args))
   }
 }
 

@@ -2,38 +2,51 @@
   "name": "yp-chat",
   "version": "1.0.0",
   "description": "Yandex.Practicum - Chat",
-  "type": "module",
   "scripts": {
     "serve": "parcel public/index.html --port 3000",
     "build": "parcel build public/index.html",
     "start": "npm run build && node server.js",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "Denis",
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-less": "2.4.1",
+    "@types/chai": "4.3.1",
+    "@types/mocha": "9.1.1",
+    "@types/sanitize-html": "2.6.2",
     "@typescript-eslint/eslint-plugin": "5.20.0",
     "@typescript-eslint/parser": "5.20.0",
+    "buffer": "6.0.3",
+    "chai": "4.3.6",
+    "crypto-browserify": "3.12.0",
     "eslint": "8.13.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
-    "events": "^3.3.0",
+    "events": "3.3.0",
     "less": "4.1.2",
+    "mocha": "10.0.0",
     "parcel": "2.4.1",
     "prettier": "2.6.2",
-    "typescript": "4.6.3"
+    "process": "0.11.10",
+    "stream-browserify": "3.0.0",
+    "ts-node": "10.8.0",
+    "typescript": "4.6.3",
+    "jsdom-global": "3.0.2"
   },
   "dependencies": {
     "@types/uuid": "8.3.4",
     "dotenv": "16.0.0",
     "express": "4.17.3",
     "handlebars": "4.7.7",
-    "lodash": "^4.17.21",
     "remixicon": "2.5.0",
-    "uuid": "8.3.2"
+    "sanitize-html": "2.7.0",
+    "sweetalert2": "11.4.17",
+    "uuid": "8.3.2",
+    "jsdom": "19.0.0"
   }
 }

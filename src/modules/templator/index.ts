@@ -1,22 +1,18 @@
 import * as Handlebars from 'handlebars'
-import getRouterLinkAttrs from '../engine/router/getRouterLinkAttrs'
-// import getChildComponentLinkAttrs from '../engine/router/getChildComponentLinkAttrs'
+import BaseComponent from '../engine/shared/BaseComponent'
 import { dataAttrs } from '../engine/shared/constants'
-
-Handlebars.registerHelper('routerLink', function (to) {
-  return getRouterLinkAttrs(to)
-})
-
-// Handlebars.registerHelper(':child', function (name) {
-//   return getChildComponentLinkAttrs(name)
-// })
+import { isString } from '../../utils/typeGuards'
 
 Handlebars.registerHelper(':content', function (name) {
   return `${dataAttrs.content}='${name}'`
 })
 
-Handlebars.registerHelper(':child', function (name) {
-  return `${dataAttrs.child}='${name}'`
+Handlebars.registerHelper(':child', function (component: BaseComponent, prefix = '') {
+  if (isString(prefix) && prefix) {
+    return `${dataAttrs.child}='${prefix}-${component.id}'`
+  } else {
+    return `${dataAttrs.child}='${component.id}'`
+  }
 })
 
 export default Handlebars
