@@ -14,7 +14,6 @@ class Controller {
   }
 
 
-
   updateUser = async () => {
     const response = await AuthService.getUserInfo().then((xhr) => {
       return new XhrResponse(xhr)

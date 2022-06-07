@@ -11,6 +11,11 @@
     "test": "mocha",
     "precommit": "npm run test"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test"
+    }
+  },
   "keywords": [],
   "author": "Denis",
   "license": "ISC",
