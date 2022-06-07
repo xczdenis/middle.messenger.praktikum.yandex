@@ -13,6 +13,8 @@ class Controller {
     this._component = component
   }
 
+
+
   updateUser = async () => {
     const response = await AuthService.getUserInfo().then((xhr) => {
       return new XhrResponse(xhr)

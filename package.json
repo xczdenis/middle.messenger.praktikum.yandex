@@ -9,7 +9,7 @@
     "start": "npm run build && node server.js",
     "eslint": "eslint",
     "test": "mocha",
-    "precommit": "npm test"
+    "precommit": "npm run test"
   },
   "keywords": [],
   "author": "Denis",
