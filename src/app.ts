@@ -3,11 +3,10 @@ import t from './modules/templator/index'
 import { TBaseProps, TComponentData } from './modules/engine/shared/types'
 import { urls } from './urls'
 
-const template = `<main class='page'>
-  <div id='routerView' style='height: 100vh'/>
+const template = `<main class="page">
+  <div id="routerView" style="height: 100vh"/>
 </main>
 `
-
 type TProps = TBaseProps
 
 class Component extends BaseComponent {

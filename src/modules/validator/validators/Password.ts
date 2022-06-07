@@ -1,8 +1,7 @@
 import BaseValidator from './BaseValidator'
 
 class Validator extends BaseValidator {
-  errorText =
-    'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра'
+  errorText = 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра'
 
   validate = (value: string): boolean => {
     /*

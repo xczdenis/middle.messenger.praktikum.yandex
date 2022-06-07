@@ -6,7 +6,7 @@ import { showModalError } from '../../../utils/showModalError'
 import { isArray } from '../../../utils/mydash/isArray'
 import { ComponentMessage } from '../Message/component'
 
-function getTimeFromData(data: Record<string, any>): string {
+function getTimeFromData(data: Record<string, string>): string {
   let time = ''
   try {
     const dateTime = new Date(data.time)

@@ -43,7 +43,7 @@ class Controller {
         ChatService.createChat(result.value).then((xhr) => {
           const response = new XhrResponse(xhr)
           if (response.isOk()) {
-            const data = response.getData<Record<string, any>>()
+            const data = response.getData<Record<string, number>>()
             if (data) {
               this._component.addChat(Chat({ props: { id: data.id, title: result.value } }))
             }
