@@ -1,8 +1,8 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7f2e6c9c-129e-479b-a756-6f289326a0f8/deploy-status)](https://app.netlify.com/sites/capable-stroopwafel-0d4bf9/deploys)
 
 # Сайт
-Host on heroku (задержка при открытии 30 сек): [чат-heroku](https://yap-chat.herokuapp.com/)
-Host on netlify: [чат-netlify](https://capable-stroopwafel-0d4bf9.netlify.app/)
+* [чат-heroku](https://yap-chat.herokuapp.com/): host on heroku (задержка при открытии 30 сек)
+* [чат-netlify](https://capable-stroopwafel-0d4bf9.netlify.app/): host on netlify
 
 ## Дизайн
 Фигма: [смотреть дизайн](https://www.figma.com/file/EigTT1Fj8beQMVjOJayOgA/ypchat?node-id=1%3A21)
