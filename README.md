@@ -1,7 +1,8 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7f2e6c9c-129e-479b-a756-6f289326a0f8/deploy-status)](https://app.netlify.com/sites/capable-stroopwafel-0d4bf9/deploys)
 
-# Чат
-Сайт: [чат](https://capable-stroopwafel-0d4bf9.netlify.app/)
+# Сайт
+Host on heroku (задержка при открытии 30 сек): [чат-heroku](https://yap-chat.herokuapp.com/)
+Host on netlify: [чат-netlify](https://capable-stroopwafel-0d4bf9.netlify.app/)
 
 ## Дизайн
 Фигма: [смотреть дизайн](https://www.figma.com/file/EigTT1Fj8beQMVjOJayOgA/ypchat?node-id=1%3A21)
@@ -23,3 +24,4 @@
 1. [Sprint 1](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/4)
 2. [Sprint 2](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/7)
 3. [Sprint 3](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/12)
+4. [Sprint 4](https://github.com/xczdenis/middle.messenger.praktikum.yandex/pull/17)
