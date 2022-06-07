@@ -10,11 +10,6 @@
     "eslint": "eslint",
     "test": "mocha"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test"
-    }
-  },
   "keywords": [],
   "author": "Denis",
   "license": "ISC",
@@ -35,7 +30,6 @@
     "eslint-plugin-prettier": "4.0.0",
     "events": "3.3.0",
     "html-webpack-plugin": "5.5.0",
-    "husky": "8.0.1",
     "jsdom-global": "3.0.2",
     "less": "4.1.2",
     "less-loader": "11.0.0",
