@@ -9,12 +9,7 @@
     "start": "npm run build && node server.js",
     "eslint": "eslint",
     "test": "mocha",
-    "precommit": "npm run test"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test"
-    }
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Denis",
@@ -36,7 +31,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "events": "3.3.0",
     "html-webpack-plugin": "5.5.0",
-    "husky": "^8.0.1",
+    "husky": "8.0.0",
     "jsdom-global": "3.0.2",
     "less": "4.1.2",
     "less-loader": "11.0.0",
